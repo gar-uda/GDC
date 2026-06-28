@@ -4,81 +4,96 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Garuda Coin - DEMO</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
-  :root{--bg:#0a0f1c;--card:#121827;--muted:#8b95a7;--accent:#6366f1;--ok:#10b981;--warn:#f59e0b}
-  *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#e5e7eb}
-  header{position:sticky;top:0;background:#0f1524;border-bottom:1px solid #1f2937;padding:12px 16px;display:flex;gap:12px;align-items:center;z-index:5}
+  :root{
+    --bg:#0a0f1c;--card:#121827;--muted:#8b95a7;--text:#e5e7eb;--border:#1f2937;--accent:#6366f1;--ok:#10b981
+  }
+  [data-theme="light"]{
+    --bg:#f5f7fb;--card:#ffffff;--muted:#6b7280;--text:#0f172a;--border:#e5e7eb;--accent:#4f46e5;--ok:#059669
+  }
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:var(--text);transition:.2s}
+  header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--border);padding:12px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between;z-index:5}
+  nav{display:flex;gap:4px}
   nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px}
-  nav a.active,nav a:hover{background:#1f2937;color:#fff}
-  .container{max-width:1100px;margin:0 auto;padding:20px}
-  .banner{background:#1f2937;border:1px dashed #334155;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;text-align:center}
-  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
-  .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:16px}
-  .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+  nav a.active,nav a:hover{background:var(--border);color:var(--text)}
+ .toggle{background:var(--border);border:0;color:var(--text);padding:8px 12px;border-radius:8px;cursor:pointer}
+ .container{max-width:1100px;margin:0 auto;padding:20px}
+ .banner{background:var(--card);border:1px dashed var(--border);border-radius:10px;padding:10px;margin:12px 0;font-size:12px;text-align:center}
+ .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+ .card{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:16px}
+ .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
   @media(max-width:900px){.span-3,.span-4,.span-6{grid-column:span 12}}
   h1,h2,h3{margin:0 0 10px}
-  .stat{font-size:28px;font-weight:800}
-  .muted{color:var(--muted);font-size:12px}
-  .tag{display:inline-block;background:#1f2937;padding:4px 8px;border-radius:999px;font-size:12px}
-  .btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:not-allowed;opacity:.6;width:100%}
-  .btn.ghost{background:transparent;border:1px solid #374151;opacity:1;cursor:pointer}
+ .stat{font-size:28px;font-weight:800}
+ .muted{color:var(--muted);font-size:12px}
+ .tag{display:inline-block;background:var(--border);padding:4px 8px;border-radius:999px;font-size:12px}
+ .btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:not-allowed;opacity:.6;width:100%}
   table{width:100%;border-collapse:collapse;font-size:13px}
-  th,td{padding:8px;border-bottom:1px solid #222a3f;text-align:left}
-  .bar{height:8px;background:#222a3f;border-radius:999px;overflow:hidden}
-  .fill{height:100%;background:linear-gradient(90deg,#6366f1,#22d3ee)}
+  th,td{padding:8px;border-bottom:1px solid var(--border);text-align:left}
+ .bar{height:8px;background:var(--border);border-radius:999px;overflow:hidden}
+ .fill{height:100%;background:linear-gradient(90deg,var(--accent),#22d3ee);transition:width .5s}
   footer{color:var(--muted);text-align:center;padding:24px 0;font-size:12px}
-  .page{display:none}.page.active{display:block}
-  input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #374151;background:#0f1524;color:#fff;margin:6px 0}
-  .pill{font-size:11px;background:#0f1524;border:1px solid #374151;padding:2px 8px;border-radius:999px}
+ .page{display:none}.page.active{display:block}
+  canvas{max-height:220px}
+  .pulse{animation:pulse 2s infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.6}}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);display:inline-block;margin-right:6px;animation:blink 1.2s infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 </style>
 </head>
-<body>
+<body data-theme="dark">
 <header>
-  <div class="tag">DEMO ONLY</div>
-  <nav>
-    <a href="#dashboard" class="active" onclick="go('dashboard',this)">Dashboard</a>
-    <a href="#mining" onclick="go('mining',this)">Mining</a>
-    <a href="#wallet" onclick="go('wallet',this)">Wallet</a>
-    <a href="#about" onclick="go('about',this)">About</a>
-  </nav>
+  <div style="display:flex;gap:8px;align-items:center">
+    <div class="tag">DEMO ONLY</div>
+    <nav>
+      <a href="#dashboard" class="active" onclick="go('dashboard',this)">Dashboard</a>
+      <a href="#mining" onclick="go('mining',this)">Mining</a>
+      <a href="#wallet" onclick="go('wallet',this)">Wallet</a>
+      <a href="#about" onclick="go('about',this)">About</a>
+    </nav>
+  </div>
+  <button class="toggle" id="themeBtn" onclick="toggleTheme()">🌙 Dark</button>
 </header>
 
 <div class="container">
-  <div class="banner">This is a frontend practice site. No real coin, no deposits, no withdrawals, no gas fees, no bank details. All numbers are simulated.</div>
+  <div class="banner">Frontend practice only. No real coin, no deposits, no withdrawals, no gas fees. All numbers are simulated.</div>
 
   <!-- DASHBOARD -->
   <section id="dashboard" class="page active">
     <div class="grid">
       <div class="card span-6">
         <h2>Garuda Coin $GRD</h2>
-        <p class="muted">Theme: Solana-like UI. Not affiliated with Solana.</p>
+        <p class="muted">Theme: Solana-like UI. .</p>
         <p class="stat" id="balance">1,204.38 GRD</p>
-        <p class="muted">Simulated Balance. Cannot be withdrawn.</p>
-        <div style="display:flex;gap:8px;margin-top:10px">
-          <button class="btn" disabled>Withdraw [Disabled]</button>
-          <button class="btn" disabled>Deposit [Disabled]</button>
-        </div>
+        <p class="muted"><span class="dot"></span><span class="pulse">Mining Active [Sim]</span></p>
+        <button class="btn" disabled>Withdraw [Disabled]</button>
       </div>
       <div class="card span-6">
         <h3>Simulated Stats</h3>
         <p class="muted">Mining Age: <span id="age">3d 14h 22m</span></p>
         <p class="muted">Simulated Hashrate: <span id="hr">42.7 MH/s</span></p>
-        <p class="muted">Uptime: 99.8%</p>
-        <div class="bar"><div class="fill" style="width:42%"></div></div>
+        <p class="muted">Utilization: <span id="util">42</span>%</p>
+        <div class="bar"><div class="fill" id="utilBar" style="width:42%"></div></div>
       </div>
+
+      <div class="card span-12">
+        <h3>Simulated Earnings - Last 7 Days</h3>
+        <canvas id="earningsChart"></canvas>
+        <p class="muted">Fake data generated by JS. No real mining.</p>
+      </div>
+
       <div class="card span-4">
-        <h3>Activity</h3>
-        <table><tr><th>Time</th><th>Event</th></tr>
-          <tr><td>Now</td><td class="ok">+0.12 GRD [Sim]</td></tr>
-          <tr><td>-5m</td><td class="ok">+0.11 GRD [Sim]</td></tr>
-          <tr><td>-12m</td><td class="ok">+0.10 GRD [Sim]</td></tr>
+        <h3>Live Activity Feed</h3>
+        <table id="feed"><tr><th>Time</th><th>Event</th></tr>
+          <tr><td>Now</td><td style="color:var(--ok)">+0.12 GRD [Sim]</td></tr>
         </table>
       </div>
       <div class="card span-4">
         <h3>Network [Theme]</h3>
-        <p class="muted">Chain: Solana Devnet [Fake]</p>
-        <p class="muted">Block: 184,209,331</p>
-        <p class="muted">Est. TPS: 3,120</p>
+        <p class="muted">Chain: Solana Devnet </p>
+        <p class="muted">Block: <span id="block">184209331</span></p>
+        <p class="muted">Est. TPS: <span id="tps">3120</span></p>
       </div>
       <div class="card span-4">
         <h3>Safety</h3>
@@ -94,11 +109,10 @@
         <h2>Mining [Simulation]</h2>
         <p class="muted">This is not real mining. Browsers can’t mine crypto.</p>
         <div class="grid">
-          <div class="card span-6"><div class="muted">Rigs Online</div><div class="stat">3</div></div>
-          <div class="card span-6"><div class="muted">Power</div><div class="stat">1.2 kW <span class="pill">sim</span></div></div>
+          <div class="card span-6"><div class="muted">Rigs Online</div><div class="stat" id="rigs">3</div></div>
+          <div class="card span-6"><div class="muted">Power</div><div class="stat" id="power">1.20 kW <span class="tag">sim</span></div></div>
         </div>
-        <button class="btn" disabled>Start Rig [Disabled]</button>
-        <button class="btn ghost" disabled>Stop Rig [Disabled]</button>
+        <button class="btn" disabled>Start/Stop [Disabled in Demo]</button>
       </div>
       <div class="card span-6">
         <h3>Performance Log</h3>
@@ -117,7 +131,7 @@
       <div class="card span-6">
         <h2>Wallet [Read-Only Demo]</h2>
         <p class="muted">Address: GRD_DEMO_XXXX_XXXX</p>
-        <p class="stat">1,204.38 GRD</p>
+        <p class="stat" id="bal2">1,204.38 GRD</p>
         <p class="muted">≈ $0.00 USD [No real value]</p>
       </div>
       <div class="card span-6">
@@ -127,7 +141,7 @@
           <tr><td>#1020</td><td>Simulated</td><td>+0.11</td></tr>
           <tr><td>#1019</td><td>Simulated</td><td>+0.10</td></tr>
         </table>
-        <p class="muted">Withdraw/Deposit forms removed. This is demo-only.</p>
+        <p class="muted">No Deposit/Withdraw forms. Demo-only.</p>
       </div>
     </div>
   </section>
@@ -137,16 +151,8 @@
     <div class="grid">
       <div class="card span-12">
         <h2>About This Demo</h2>
-        <p class="muted">This site is for learning frontend dev. It does not mine crypto, hold funds, or process payments. 
-        There is no backend, no database, and no way to send/receive money. Do not enter real financial info.</p>
-        <p class="muted">If someone asks you to pay a “gas fee” to a person or bank account to unlock crypto, do not pay. Report it.</p>
-        <div class="card"><b>How to use this for practice:</b>
-          <ul>
-            <li>Change colors, layout, and text.</li>
-            <li>Add Chart.js for fake earnings charts.</li>
-            <li>Host it on GitHub Pages for your portfolio.</li>
-          </ul>
-        </div>
+        <p class="muted">This site is for learning frontend dev. It does not mine crypto, hold funds, or process payments.
+        Features: SPA routing, Chart.js, Dark/Light mode, animated stats.</p>
       </div>
     </div>
   </section>
@@ -155,22 +161,89 @@
 </div>
 
 <script>
-  // Simple SPA routing
+  // Theme toggle
+  function toggleTheme(){
+    const body = document.body;
+    const next = body.getAttribute('data-theme') === 'dark'? 'light' : 'dark';
+    body.setAttribute('data-theme', next);
+    document.getElementById('themeBtn').textContent = next === 'dark'? '🌙 Dark' : '☀️ Light';
+    localStorage.setItem('theme', next);
+    updateChartColors();
+  }
+  const saved = localStorage.getItem('theme') || 'dark';
+  document.body.setAttribute('data-theme', saved);
+  document.getElementById('themeBtn').textContent = saved === 'dark'? '🌙 Dark' : '☀️ Light';
+
+  // SPA routing
   function go(id,el){
     document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
     document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     if(el) el.classList.add('active');
   }
-  // Fake live counters
+
+  // Animated fake mining data
   let bal = 1204.38;
+  let block = 184209331;
+  let util = 42;
+
   setInterval(()=>{
-    bal += 0.001;
+    // Balance ticks up slowly
+    bal += (Math.random()*0.002);
     document.getElementById('balance').textContent = bal.toFixed(2) + ' GRD';
+    document.getElementById('bal2').textContent = bal.toFixed(2) + ' GRD';
+
+    // Hashrate fluctuates 40-45 MH/s
     const hr = (40 + Math.random()*5).toFixed(1);
     document.getElementById('hr').textContent = hr + ' MH/s';
     document.getElementById('hr2').textContent = hr + ' MH/s';
-  },2000);
+
+    // Utilization bar moves 35-55%
+    util = 35 + Math.random()*20;
+    document.getElementById('util').textContent = util.toFixed(0);
+    document.getElementById('utilBar').style.width = util.toFixed(0) + '%';
+
+    // Block + TPS jitter
+    block += Math.floor(Math.random()*2);
+    document.getElementById('block').textContent = block.toLocaleString();
+    document.getElementById('tps').textContent = (3000 + Math.random()*200).toFixed(0);
+
+    // Rigs + Power jitter
+    document.getElementById('rigs').textContent = 2 + Math.floor(Math.random()*2);
+    document.getElementById('power').innerHTML = (1.1 + Math.random()*0.2).toFixed(2) + ' kW <span class="tag">sim</span>';
+
+    // Push new row to activity feed
+    const feed = document.getElementById('feed');
+    const row = feed.insertRow(1);
+    row.innerHTML = `<td>Now</td><td style="color:var(--ok)">+${(0.08+Math.random()*0.06).toFixed(2)} GRD [Sim]</td>`;
+    if(feed.rows.length > 6) feed.deleteRow(6); // keep it short
+  },1500);
+
+  // Chart.js
+  let chart;
+  function updateChartColors(){
+    const isDark = document.body.getAttribute('data-theme') === 'dark';
+    const text = isDark? '#8b95a7' : '#6b7280';
+    const grid = isDark? '#1f2937' : '#e5e7eb';
+    const accent = isDark? '#6366f1' : '#4f46e5';
+    chart.options.scales.x.ticks.color = text;
+    chart.options.scales.y.ticks.color = text;
+    chart.options.scales.x.grid.color = grid;
+    chart.options.scales.y.grid.color = grid;
+    chart.data.datasets[0].borderColor = accent;
+    chart.data.datasets[0].backgroundColor = accent + '33';
+    chart.update();
+  }
+
+  const ctx = document.getElementById('earningsChart');
+  const labels = ['Day 1','Day 2','Day 3','Day 4','Day 5','Day 6','Day 7'];
+  const data = labels.map((_,i)=> (0.8 + Math.sin(i)*0.3 + Math.random()*0.2).toFixed(2));
+  chart = new Chart(ctx, {
+    type: 'line',
+    data: { labels, datasets: [{ label: 'GRD Earned [Sim]', data, tension: 0.4, fill: true }] },
+    options: { plugins:{legend:{display:false}}, scales:{ x:{ticks:{},grid:{}}, y:{ticks:{},grid:{}} } }
+  });
+  updateChartColors();
 </script>
 </body>
 </html>
