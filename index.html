@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Garuda Coin - DEMO</title>
+<style>
+  :root{--bg:#0a0f1c;--card:#121827;--muted:#8b95a7;--accent:#6366f1;--ok:#10b981;--warn:#f59e0b}
+  *{box-sizing:border-box}body{margin:0;font-family:Inter,system-ui,Arial;background:var(--bg);color:#e5e7eb}
+  header{position:sticky;top:0;background:#0f1524;border-bottom:1px solid #1f2937;padding:12px 16px;display:flex;gap:12px;align-items:center;z-index:5}
+  nav a{color:var(--muted);text-decoration:none;padding:8px 12px;border-radius:8px}
+  nav a.active,nav a:hover{background:#1f2937;color:#fff}
+  .container{max-width:1100px;margin:0 auto;padding:20px}
+  .banner{background:#1f2937;border:1px dashed #334155;border-radius:10px;padding:10px;margin:12px 0;font-size:12px;text-align:center}
+  .grid{display:grid;grid-template-columns:repeat(12,1fr);gap:16px}
+  .card{background:var(--card);border:1px solid #1f2937;border-radius:14px;padding:16px}
+  .span-3{grid-column:span 3}.span-4{grid-column:span 4}.span-6{grid-column:span 6}.span-12{grid-column:span 12}
+  @media(max-width:900px){.span-3,.span-4,.span-6{grid-column:span 12}}
+  h1,h2,h3{margin:0 0 10px}
+  .stat{font-size:28px;font-weight:800}
+  .muted{color:var(--muted);font-size:12px}
+  .tag{display:inline-block;background:#1f2937;padding:4px 8px;border-radius:999px;font-size:12px}
+  .btn{background:var(--accent);color:#fff;border:0;padding:10px 14px;border-radius:10px;cursor:not-allowed;opacity:.6;width:100%}
+  .btn.ghost{background:transparent;border:1px solid #374151;opacity:1;cursor:pointer}
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px;border-bottom:1px solid #222a3f;text-align:left}
+  .bar{height:8px;background:#222a3f;border-radius:999px;overflow:hidden}
+  .fill{height:100%;background:linear-gradient(90deg,#6366f1,#22d3ee)}
+  footer{color:var(--muted);text-align:center;padding:24px 0;font-size:12px}
+  .page{display:none}.page.active{display:block}
+  input,select{width:100%;padding:10px;border-radius:8px;border:1px solid #374151;background:#0f1524;color:#fff;margin:6px 0}
+  .pill{font-size:11px;background:#0f1524;border:1px solid #374151;padding:2px 8px;border-radius:999px}
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">DEMO ONLY</div>
+  <nav>
+    <a href="#dashboard" class="active" onclick="go('dashboard',this)">Dashboard</a>
+    <a href="#mining" onclick="go('mining',this)">Mining</a>
+    <a href="#wallet" onclick="go('wallet',this)">Wallet</a>
+    <a href="#about" onclick="go('about',this)">About</a>
+  </nav>
+</header>
+
+<div class="container">
+  <div class="banner">This is a frontend practice site. No real coin, no deposits, no withdrawals, no gas fees, no bank details. All numbers are simulated.</div>
+
+  <!-- DASHBOARD -->
+  <section id="dashboard" class="page active">
+    <div class="grid">
+      <div class="card span-6">
+        <h2>Garuda Coin $GRD</h2>
+        <p class="muted">Theme: Solana-like UI. Not affiliated with Solana.</p>
+        <p class="stat" id="balance">1,204.38 GRD</p>
+        <p class="muted">Simulated Balance. Cannot be withdrawn.</p>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn" disabled>Withdraw [Disabled]</button>
+          <button class="btn" disabled>Deposit [Disabled]</button>
+        </div>
+      </div>
+      <div class="card span-6">
+        <h3>Simulated Stats</h3>
+        <p class="muted">Mining Age: <span id="age">3d 14h 22m</span></p>
+        <p class="muted">Simulated Hashrate: <span id="hr">42.7 MH/s</span></p>
+        <p class="muted">Uptime: 99.8%</p>
+        <div class="bar"><div class="fill" style="width:42%"></div></div>
+      </div>
+      <div class="card span-4">
+        <h3>Activity</h3>
+        <table><tr><th>Time</th><th>Event</th></tr>
+          <tr><td>Now</td><td class="ok">+0.12 GRD [Sim]</td></tr>
+          <tr><td>-5m</td><td class="ok">+0.11 GRD [Sim]</td></tr>
+          <tr><td>-12m</td><td class="ok">+0.10 GRD [Sim]</td></tr>
+        </table>
+      </div>
+      <div class="card span-4">
+        <h3>Network [Theme]</h3>
+        <p class="muted">Chain: Solana Devnet [Fake]</p>
+        <p class="muted">Block: 184,209,331</p>
+        <p class="muted">Est. TPS: 3,120</p>
+      </div>
+      <div class="card span-4">
+        <h3>Safety</h3>
+        <p class="muted">Real sites never ask you to pay “gas” to a personal account to unlock withdrawals. If a site does, it’s a scam.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- MINING -->
+  <section id="mining" class="page">
+    <div class="grid">
+      <div class="card span-6">
+        <h2>Mining [Simulation]</h2>
+        <p class="muted">This is not real mining. Browsers can’t mine crypto.</p>
+        <div class="grid">
+          <div class="card span-6"><div class="muted">Rigs Online</div><div class="stat">3</div></div>
+          <div class="card span-6"><div class="muted">Power</div><div class="stat">1.2 kW <span class="pill">sim</span></div></div>
+        </div>
+        <button class="btn" disabled>Start Rig [Disabled]</button>
+        <button class="btn ghost" disabled>Stop Rig [Disabled]</button>
+      </div>
+      <div class="card span-6">
+        <h3>Performance Log</h3>
+        <table><tr><th>Time</th><th>Hashrate</th></tr>
+          <tr><td>Now</td><td id="hr2">42.7 MH/s</td></tr>
+          <tr><td>-1m</td><td>42.3 MH/s</td></tr>
+          <tr><td>-2m</td><td>41.9 MH/s</td></tr>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- WALLET -->
+  <section id="wallet" class="page">
+    <div class="grid">
+      <div class="card span-6">
+        <h2>Wallet [Read-Only Demo]</h2>
+        <p class="muted">Address: GRD_DEMO_XXXX_XXXX</p>
+        <p class="stat">1,204.38 GRD</p>
+        <p class="muted">≈ $0.00 USD [No real value]</p>
+      </div>
+      <div class="card span-6">
+        <h3>Transactions</h3>
+        <table><tr><th>ID</th><th>Type</th><th>Amount</th></tr>
+          <tr><td>#1021</td><td>Simulated</td><td>+0.12</td></tr>
+          <tr><td>#1020</td><td>Simulated</td><td>+0.11</td></tr>
+          <tr><td>#1019</td><td>Simulated</td><td>+0.10</td></tr>
+        </table>
+        <p class="muted">Withdraw/Deposit forms removed. This is demo-only.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="page">
+    <div class="grid">
+      <div class="card span-12">
+        <h2>About This Demo</h2>
+        <p class="muted">This site is for learning frontend dev. It does not mine crypto, hold funds, or process payments. 
+        There is no backend, no database, and no way to send/receive money. Do not enter real financial info.</p>
+        <p class="muted">If someone asks you to pay a “gas fee” to a person or bank account to unlock crypto, do not pay. Report it.</p>
+        <div class="card"><b>How to use this for practice:</b>
+          <ul>
+            <li>Change colors, layout, and text.</li>
+            <li>Add Chart.js for fake earnings charts.</li>
+            <li>Host it on GitHub Pages for your portfolio.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>Garuda Coin DEMO • Educational use only • No financial services</footer>
+</div>
+
+<script>
+  // Simple SPA routing
+  function go(id,el){
+    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+    document.querySelectorAll('nav a').forEach(a=>a.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    if(el) el.classList.add('active');
+  }
+  // Fake live counters
+  let bal = 1204.38;
+  setInterval(()=>{
+    bal += 0.001;
+    document.getElementById('balance').textContent = bal.toFixed(2) + ' GRD';
+    const hr = (40 + Math.random()*5).toFixed(1);
+    document.getElementById('hr').textContent = hr + ' MH/s';
+    document.getElementById('hr2').textContent = hr + ' MH/s';
+  },2000);
+</script>
+</body>
+</html>
